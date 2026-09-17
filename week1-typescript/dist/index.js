@@ -1,4 +1,5 @@
 "use strict";
+// type MemberRole = "leader" | "member";
 const members = [
     {
         id: 1,
@@ -31,3 +32,30 @@ console.log("\n[회원 ID 2]");
 console.log(getMemberInfo(2));
 console.log("\n[회원 ID 999]");
 console.log(getMemberInfo(999));
+const typeMember = {
+    id: 3,
+    name: "김철수",
+    role: "member",
+    githubId: "chulsoo",
+};
+console.log("\n[선택 미션 1 - type으로 작성한 회원]");
+console.log(typeMember);
+// || 와 ?? 비교
+const studyHour = 0;
+console.log("\n[선택 미션 2 - || 와 ?? 비교]");
+console.log("studyHour || 1 =", studyHour || 1);
+console.log("studyHour ?? 1 =", studyHour ?? 1);
+//타입 안전하게 처리
+function formatMemberId(input) {
+    if (typeof input === "number") {
+        return `MEMBER-${input}`;
+    }
+    if (typeof input === "string") {
+        return input.toUpperCase();
+    }
+    return "회원 ID는 숫자 또는 문자열이어야 합니다.";
+}
+console.log("\n[선택 미션 3 - unknown 타입 처리]");
+console.log(formatMemberId(10));
+console.log(formatMemberId("member-20"));
+console.log(formatMemberId(true));
