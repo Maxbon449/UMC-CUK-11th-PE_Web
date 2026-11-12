@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { isHTTPError } from "ky";
 import { useState, type SubmitEvent } from "react";
 import { login } from "../../api/auth/login";
 import { myProfileQueryKey } from "../../api/members/get-my-profile";
@@ -38,8 +39,12 @@ export function LoginPage() {
       queryClient.removeQueries({ queryKey: myProfileQueryKey, exact: true });
       setAccessToken(accessToken);
       await navigate({ to: "/my-page" });
-    } catch {
-      setErrorMessage("로그인 요청에 실패했어요. 다시 시도해 주세요.");
+    } catch (error) {
+      setErrorMessage(
+        isHTTPError(error) && error.response.status === 401
+          ? "이메일 또는 비밀번호가 올바르지 않습니다."
+          : "로그인 요청에 실패했어요. 다시 시도해 주세요.",
+      );
     } finally {
       setIsSubmitting(false);
     }

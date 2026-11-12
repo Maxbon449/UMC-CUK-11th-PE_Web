@@ -1,4 +1,5 @@
 import { apiClient } from "../api-client";
+import { unwrapApiResult, type ApiResponse } from "../api-response";
 
 export interface MyProfile {
   email: string;
@@ -8,9 +9,10 @@ export interface MyProfile {
 
 export const myProfileQueryKey = ["members", "me"] as const;
 
-export function getMyProfile(accessToken: string, signal?: AbortSignal) {
-  return apiClient.get("members/me", {
+export async function getMyProfile(accessToken: string, signal?: AbortSignal) {
+  const response = await apiClient.get("members/me", {
     headers: { Authorization: `Bearer ${accessToken}` },
     signal,
-  }).json<MyProfile>();
+  }).json<ApiResponse<MyProfile>>();
+  return unwrapApiResult(response);
 }
